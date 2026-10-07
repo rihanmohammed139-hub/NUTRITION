@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wellness Profile – Customer Suggestion</title>
+  <style>
+    /* ==========================================================================
+       WELLNESS PROFILE – CUSTOMER SUGGESTION
+       Pure Black & White Minimalist System (No Colors, No Gradients, No Icons, No External Fonts)
+       Telugu & English Font Stack: "Noto Sans Telugu", "Nirmala UI", "Gautami", Georgia, serif
+       ========================================================================== */
+    :root {
+      --font-family: "Noto Sans Telugu", "Nirmala UI", "Gautami", Georgia, Cambria, "Times New Roman", Times, serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #ffffff;
+      color: #000000;
+      font-family: var(--font-family);
+      line-height: 1.5;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    /* Typography & Hierarchy */
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #000000;
+    }
+
+    p, span, label, td, th {
+      color: #000000;
+    }
+
+    .text-muted {
+      font-size: 13px;
+    }
+
+    .bold {
+      font-weight: 700;
+    }
+
+    /* Form Controls */
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select {
+      font-family: var(--font-family);
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #000000;
+      background: #ffffff;
+      color: #000000;
+      border-radius: 0;
+      font-size: 14px;
+    }
+
+    input:focus,
+    select:focus {
+      outline: 2px solid #000000;
+      outline-offset: 1px;
+    }
+
+    .btn {
+      font-family: var(--font-family);
+      display: inline-block;
+      padding: 10px 20px;
+      border: 1px solid #000000;
+      background: #000000;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 0;
+      text-decoration: none;
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: #000000;
+    }
+
+    .btn:hover {
+      opacity: 0.85;
+    }
+
+    .btn-secondary:hover {
+      background: #000000;
+      color: #ffffff;
+    }
+
+    .btn-small {
+      padding: 4px 10px;
+      font-size: 12px;
+    }
+
+    /* Layout Grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .border-box {
+      border: 1px solid #000000;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+      font-size: 13px;
+    }
+
+    th, td {
+      border: 1px solid #000000;
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      font-weight: 700;
+      background: #ffffff;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    /* Priority Ranking Items */
+    .priority-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      border: 1px solid #000000;
+      cursor: pointer;
+      font-size: 13px;
+      user-select: none;
+      background: #ffffff;
+    }
+
+    .priority-item.selected {
+      background: #000000;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .priority-item .rank-badge {
+      border: 1px solid #ffffff;
+      padding: 2px 6px;
+      font-size: 11px;
+    }
+
+    /* Radio Tile */
+    .radio-tile {
+      display: block;
+      text-align: center;
+      padding: 10px;
+      border: 1px solid #000000;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .radio-tile input {
+      display: none;
+    }
+
+    .radio-tile.selected {
+      background: #000000;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    /* Targets Display */
+    .target-card {
+      border: 1px solid #000000;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .target-value {
+      font-size: 36px;
+      font-weight: 900;
+      line-height: 1.1;
+      margin: 8px 0;
+    }
+
+    .error-msg {
+      color: #000000;
+      text-decoration: underline;
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 4px;
+      display: none;
+    }
+
+    /* Header & Navigation */
+    .top-nav {
+      border-bottom: 1px solid #000000;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .lang-toggle {
+      border: 1px solid #000000;
+      padding: 2px;
+      display: inline-flex;
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: var(--font-family);
+    }
+
+    .lang-btn.active {
+      background: #000000;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    /* Print Stylesheet */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 12mm 15mm;
+      }
+
+      body {
+        padding: 0;
+        font-size: 11pt;
+      }
+
+      .no-print,
+      .top-nav,
+      .btn,
+      form,
+      #input-section {
+        display: none !important;
+      }
+
+      #results-section,
+      .print-header {
+        display: block !important;
+      }
+
+      table, tr, td, th {
+        page-break-inside: avoid !important;
+      }
+
+      .print-avoid-break {
+        page-break-inside: avoid !important;
+      }
+    }
+
+    .print-header {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ================= PRINT HEADER ================= -->
+  <div class="print-header" style="border-bottom: 1px solid #000; padding-bottom: 12px; margin-bottom: 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+      <div>
+        <h1 data-i18n="appName">Wellness Profile – Customer Suggestion</h1>
+        <p class="text-muted" data-i18n="appSubtitle">Personalized Nutrition & Activity Assessment (Information Only)</p>
+      </div>
+      <div style="text-align: right; font-size: 13px;">
+        <p><strong data-i18n="assessmentDate">Date</strong>: <span id="print-date"></span></p>
+        <p><strong data-i18n="summaryName">Customer</strong>: <span id="print-customer-name">—</span></p>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: space-between; margin-top: 10px; padding-top: 8px; border-top: 1px solid #000; font-size: 13px;">
+      <p><strong data-i18n="preparedBy">Prepared by</strong>: <span id="print-advisor">—</span></p>
+      <p><strong data-i18n="contact">Contact</strong>: <span id="print-contact">—</span></p>
+    </div>
+  </div>
+
+  <!-- ================= TOP NAVIGATION & LANGUAGE TOGGLE ================= -->
+  <div class="top-nav no-print">
+    <div>
+      <h1 data-i18n="appName">Wellness Profile – Customer Suggestion</h1>
+      <p class="text-muted"><span data-i18n="appSubtitle">Personalized Nutrition & Activity Assessment</span> &bull; <strong data-i18n="infoOnlyBadge">Information Only</strong></p>
+    </div>
+    <div class="lang-toggle">
+      <button type="button" class="lang-btn active" id="btn-en" onclick="setLanguage('en')">English</button>
+      <button type="button" class="lang-btn" id="btn-te" onclick="setLanguage('te')">తెలుగు</button>
+    </div>
+  </div>
+
+  <!-- ================= ADVISOR INFO BAR ================= -->
+  <div class="border-box no-print" style="margin-bottom: 20px; padding: 12px;">
+    <div class="grid-3">
+      <div>
+        <label data-i18n="preparedBy">Prepared by:</label>
+        <input type="text" id="advisor-name" value="Wellness Advisor" placeholder="Advisor Name" oninput="syncAdvisorDetails()">
+      </div>
+      <div>
+        <label data-i18n="contact">Contact:</label>
+        <input type="text" id="advisor-contact" value="+91 98765 43210" placeholder="Phone or Email" oninput="syncAdvisorDetails()">
+      </div>
+      <div>
+        <label data-i18n="assessmentDate">Date:</label>
+        <input type="date" id="assessment-date" oninput="syncAdvisorDetails()">
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 1 – INPUT FORM ================= -->
+  <section id="input-section" class="border-box no-print">
+    <h2 data-i18n="formTitle">Wellness Profile Input Form</h2>
+    <p class="text-muted" style="margin-bottom: 20px;" data-i18n="formSubtitle">Please enter customer details accurately to compute dietary and fitness recommendations.</p>
+
+    <form id="wellness-form" onsubmit="handleFormSubmit(event)">
+      <!-- 1. Name & 2. Age & 3. Gender -->
+      <div class="grid-3">
+        <div class="form-group">
+          <label for="cust-name">1. <span data-i18n="fullName">Name (Optional)</span></label>
+          <input type="text" id="cust-name" placeholder="e.g. Ramesh Kumar">
+        </div>
+        <div class="form-group">
+          <label for="cust-age">2. <span data-i18n="age">Age</span> *</label>
+          <input type="number" id="cust-age" min="10" max="120" value="32" placeholder="e.g. 32" required>
+          <div class="error-msg" id="err-age" data-i18n="errAge">Please enter a valid age between 10 and 120.</div>
+        </div>
+        <div class="form-group">
+          <label>3. <span data-i18n="gender">Gender</span> *</label>
+          <div style="display: flex; gap: 20px; margin-top: 8px;">
+            <label style="cursor: pointer;"><input type="radio" name="gender" value="male" checked> <span data-i18n="male">Male</span></label>
+            <label style="cursor: pointer;"><input type="radio" name="gender" value="female"> <span data-i18n="female">Female</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Height -->
+      <div class="form-group" style="border-top: 1px solid #000; padding-top: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <label>4. <span data-i18n="height">Height</span> *</label>
+          <div>
+            <button type="button" class="btn btn-secondary btn-small" id="unit-ft-btn" onclick="setHeightUnit('ft_in')">Feet + Inches</button>
+            <button type="button" class="btn btn-secondary btn-small" id="unit-cm-btn" onclick="setHeightUnit('cm')">cm</button>
+          </div>
+        </div>
+        <div id="height-ft-container" class="grid-2" style="max-width: 360px;">
+          <div>
+            <label for="height-ft" data-i18n="feet">Feet</label>
+            <input type="number" id="height-ft" min="3" max="8" value="5">
+          </div>
+          <div>
+            <label for="height-in" data-i18n="inches">Inches</label>
+            <input type="number" id="height-in" min="0" max="11" value="8">
+          </div>
+        </div>
+        <div id="height-cm-container" style="display: none; max-width: 200px;">
+          <label for="height-cm" data-i18n="cm">Centimeters (cm)</label>
+          <input type="number" id="height-cm" min="90" max="240" value="173">
+        </div>
+        <div class="error-msg" id="err-height" data-i18n="errHeight">Please enter a valid height.</div>
+      </div>
+
+      <!-- 5. Current Weight & 6. Target Weight -->
+      <div class="form-group" style="border-top: 1px solid #000; padding-top: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <label>5 &amp; 6. <span data-i18n="weightSection">Weight Assessment</span> *</label>
+          <div>
+            <button type="button" class="btn btn-secondary btn-small" id="unit-kg-btn" onclick="setWeightUnit('kg')">Kilograms (kg)</button>
+            <button type="button" class="btn btn-secondary btn-small" id="unit-lbs-btn" onclick="setWeightUnit('lbs')">Pounds (lbs)</button>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div>
+            <label for="current-weight">5. <span data-i18n="currentWeight">Current Weight</span> (<span id="curr-weight-unit">kg</span>) *</label>
+            <input type="number" step="0.1" id="current-weight" value="80" required>
+            <div class="error-msg" id="err-current-weight" data-i18n="errCurrentWeight">Please enter a valid current weight.</div>
+          </div>
+          <div>
+            <label for="target-weight">6. <span data-i18n="targetWeight">Target Weight</span> (<span id="target-weight-unit">kg</span>) *</label>
+            <input type="number" step="0.1" id="target-weight" value="70" required>
+            <div class="error-msg" id="err-target-weight" data-i18n="errTargetWeight">Please enter a valid target weight.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Meals per Day & 8. Glasses of Water -->
+      <div class="grid-2" style="border-top: 1px solid #000; padding-top: 14px;">
+        <div class="form-group">
+          <label>7. <span data-i18n="mealsPerDay">Meals per day</span> *</label>
+          <div class="grid-4" style="margin-top: 4px;">
+            <div class="radio-tile" onclick="selectMeals(2)" id="meal-opt-2">2</div>
+            <div class="radio-tile" onclick="selectMeals(3)" id="meal-opt-3">3</div>
+            <div class="radio-tile selected" onclick="selectMeals(4)" id="meal-opt-4">4</div>
+            <div class="radio-tile" onclick="selectMeals(5)" id="meal-opt-5">5</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="water-select">8. <span data-i18n="waterPerDay">Glasses of water per day</span> *</label>
+          <select id="water-select" style="margin-top: 4px;">
+            <option value="4">4 glasses (~1.0 L)</option>
+            <option value="5">5 glasses (~1.25 L)</option>
+            <option value="6">6 glasses (~1.5 L)</option>
+            <option value="7">7 glasses (~1.75 L)</option>
+            <option value="8" selected>8 glasses (~2.0 L)</option>
+            <option value="9">9 glasses (~2.25 L)</option>
+            <option value="10">10 glasses (~2.5 L)</option>
+            <option value="12">12 glasses (~3.0 L)</option>
+            <option value="14">14 glasses (~3.5 L)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 9. Activity Level -->
+      <div class="form-group" style="border-top: 1px solid #000; padding-top: 14px;">
+        <label>9. <span data-i18n="activityLevel">Activity level</span> *</label>
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+          <label style="border: 1px solid #000; padding: 8px; cursor: pointer;">
+            <input type="radio" name="activity" value="sedentary"> <span data-i18n="actSedentary">Sedentary (desk job, minimal movement)</span>
+          </label>
+          <label style="border: 1px solid #000; padding: 8px; cursor: pointer;">
+            <input type="radio" name="activity" value="lightly_active" checked> <span data-i18n="actLight">Lightly active (1-2 days per week)</span>
+          </label>
+          <label style="border: 1px solid #000; padding: 8px; cursor: pointer;">
+            <input type="radio" name="activity" value="moderately_active"> <span data-i18n="actMod">Moderately active (3-4 days per week)</span>
+          </label>
+          <label style="border: 1px solid #000; padding: 8px; cursor: pointer;">
+            <input type="radio" name="activity" value="very_active"> <span data-i18n="actVery">Very active (5-6 days per week)</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 10. Wellness Priorities (Rank up to 4) -->
+      <div class="form-group" style="border-top: 1px solid #000; padding-top: 14px;">
+        <label>10. <span data-i18n="prioritiesTitle">Wellness priorities (multi-select, can rank up to 4)</span> *</label>
+        <p class="text-muted" style="margin-bottom: 8px;" data-i18n="prioritiesSubtitle">Click in order of importance. Your primary choice dictates calorie target logic.</p>
+        <div class="grid-3" id="priority-container">
+          <div class="priority-item selected" onclick="togglePriority('lose_weight')" id="p-lose_weight">
+            <span data-i18n="pLose">Lose Weight</span>
+            <span class="rank-badge" id="badge-lose_weight">#1</span>
+          </div>
+          <div class="priority-item" onclick="togglePriority('gain_weight')" id="p-gain_weight">
+            <span data-i18n="pGain">Gain Weight</span>
+            <span class="rank-badge" id="badge-gain_weight" style="display:none;"></span>
+          </div>
+          <div class="priority-item selected" onclick="togglePriority('build_muscle')" id="p-build_muscle">
+            <span data-i18n="pMuscle">Build Muscle</span>
+            <span class="rank-badge" id="badge-build_muscle">#2</span>
+          </div>
+          <div class="priority-item" onclick="togglePriority('improve_fitness')" id="p-improve_fitness">
+            <span data-i18n="pFitness">Improve Fitness</span>
+            <span class="rank-badge" id="badge-improve_fitness" style="display:none;"></span>
+          </div>
+          <div class="priority-item" onclick="togglePriority('improve_nutrition')" id="p-improve_nutrition">
+            <span data-i18n="pNutrition">Improve Overall Nutrition</span>
+            <span class="rank-badge" id="badge-improve_nutrition" style="display:none;"></span>
+          </div>
+          <div class="priority-item" onclick="togglePriority('maintain_weight')" id="p-maintain_weight">
+            <span data-i18n="pMaintain">Maintain Weight</span>
+            <span class="rank-badge" id="badge-maintain_weight" style="display:none;"></span>
+          </div>
+        </div>
+        <div class="error-msg" id="err-priorities" data-i18n="errPriorities">Please select at least 1 priority (up to 4).</div>
+      </div>
+
+      <!-- 11. Food Preference -->
+      <div class="form-group" style="border-top: 1px solid #000; padding-top: 14px;">
+        <label>11. <span data-i18n="foodPrefTitle">Food preference</span> *</label>
+        <div class="grid-3" style="margin-top: 6px;">
+          <div class="radio-tile selected" onclick="selectFoodPref('vegetarian')" id="food-opt-vegetarian">
+            <span data-i18n="foodVeg">Vegetarian</span>
+          </div>
+          <div class="radio-tile" onclick="selectFoodPref('eggetarian')" id="food-opt-eggetarian">
+            <span data-i18n="foodEgg">Eggetarian</span>
+          </div>
+          <div class="radio-tile" onclick="selectFoodPref('non_vegetarian')" id="food-opt-non_vegetarian">
+            <span data-i18n="foodNonVeg">Non-vegetarian</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit & Reset Buttons -->
+      <div style="border-top: 1px solid #000; padding-top: 20px; display: flex; gap: 12px;">
+        <button type="submit" class="btn" data-i18n="btnGetResults">Get My Results</button>
+        <button type="button" class="btn btn-secondary" onclick="resetAll()" data-i18n="btnReset">Reset</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ================= PAGE 2 – RESULTS SECTION ================= -->
+  <section id="results-section" style="display: block;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;" class="no-print">
+      <div>
+        <h2 data-i18n="resultsHeading">Customer Suggestion &amp; Wellness Report</h2>
+        <p class="text-muted" data-i18n="resultsSubtitle">Computed according to standard nutritional and metabolic formulas.</p>
+      </div>
+      <div>
+        <button type="button" class="btn" onclick="window.print()" data-i18n="btnPrint">Print / Save as PDF</button>
+      </div>
+    </div>
+
+    <!-- A. User Profile Summary Table -->
+    <div class="print-avoid-break">
+      <h3 data-i18n="summaryHeading">A. User Profile Summary</h3>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 35%;" data-i18n="thParam">Parameter</th>
+            <th data-i18n="thValue">Customer Value</th>
+          </tr>
+        </thead>
+        <tbody id="summary-table-body">
+          <!-- Dynamically Rendered -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- B. Daily Targets (Large Plain Text) -->
+    <div class="print-avoid-break border-box" style="margin-bottom: 24px;">
+      <h3 data-i18n="targetsHeading">B. Daily Targets</h3>
+      <div class="grid-3">
+        <div class="target-card">
+          <p class="bold text-muted" data-i18n="tProtein">Protein per Day</p>
+          <div class="target-value" id="disp-protein">0 g</div>
+          <p class="text-muted" id="disp-protein-note"></p>
+        </div>
+        <div class="target-card">
+          <p class="bold text-muted" data-i18n="tCalories">Calories per Day</p>
+          <div class="target-value" id="disp-calories">0 kcal</div>
+          <p class="text-muted" id="disp-calories-note"></p>
+        </div>
+        <div class="target-card">
+          <p class="bold text-muted" data-i18n="tWater">Water per Day</p>
+          <div class="target-value" id="disp-water">0 glasses</div>
+          <p class="text-muted" id="disp-water-note"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- C. Calculation Logic Table & Timeline -->
+    <div class="print-avoid-break">
+      <h3 data-i18n="calcHeading">C. Calculation Logic</h3>
+      <table>
+        <tbody id="calc-logic-body">
+          <!-- Dynamically Rendered -->
+        </tbody>
+      </table>
+      <div class="border-box" style="padding: 12px; margin-bottom: 24px;" id="timeline-box">
+        <!-- Rendered timeline -->
+      </div>
+    </div>
+
+    <!-- D. Meal Plan Table -->
+    <div class="print-avoid-break">
+      <h3 data-i18n="mealHeading">D. Meal Plan Table</h3>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 20%;" data-i18n="thMeal">Meal</th>
+            <th style="width: 15%;" class="text-center" data-i18n="thProtein">Protein (g)</th>
+            <th style="width: 15%;" class="text-center" data-i18n="thCalories">Calories</th>
+            <th data-i18n="thFoodIdeas">Food Ideas (Plain Indian Foods)</th>
+          </tr>
+        </thead>
+        <tbody id="meal-plan-body">
+          <!-- Dynamically Rendered -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- E. 7-Day Exercise Plan Table -->
+    <div class="print-avoid-break">
+      <h3 data-i18n="exHeading">E. 7-Day Exercise Plan</h3>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 18%;" data-i18n="thDay">Day</th>
+            <th data-i18n="thWorkout">Workout</th>
+            <th style="width: 25%;" data-i18n="thDuration">Duration</th>
+          </tr>
+        </thead>
+        <tbody id="exercise-plan-body">
+          <!-- Dynamically Rendered -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- F. Water and Lifestyle Tips -->
+    <div class="print-avoid-break border-box">
+      <h3 data-i18n="tipsHeading">F. Water &amp; Lifestyle Tips</h3>
+      <ul id="lifestyle-tips-list" style="padding-left: 20px; font-size: 13px;">
+        <!-- Dynamically Rendered -->
+      </ul>
+    </div>
+
+    <!-- G. Disclaimer -->
+    <div class="print-avoid-break" style="border-top: 2px solid #000; padding-top: 12px; margin-top: 24px;">
+      <h4 style="font-size: 12px; text-transform: uppercase;" data-i18n="discTitle">G. Disclaimer</h4>
+      <p style="font-size: 11px; margin-top: 4px;" data-i18n="disclaimer">
+        This is general guidance for information only, not medical advice. Consult a doctor or dietitian before starting any diet or exercise plan.
+      </p>
+    </div>
+  </section>
+
+</div>
+
+<!-- ================= JAVASCRIPT APPLICATION CORE ================= -->
+<script>
+/**
+ * Bilingual Translation Dictionary
+ * Natural, conversational Telugu and plain English
+ */
+const translations = {
+  en: {
+    appName: "Wellness Profile – Customer Suggestion",
+    appSubtitle: "Personalized Nutrition & Activity Assessment",
+    infoOnlyBadge: "Information Only",
+    preparedBy: "Prepared by",
+    contact: "Contact",
+    assessmentDate: "Date",
+    formTitle: "Wellness Profile Input Form",
+    formSubtitle: "Please enter customer details accurately to compute dietary and fitness recommendations.",
+    fullName: "Name (Optional)",
+    age: "Age",
+    gender: "Gender",
+    male: "Male",
+    female: "Female",
+    height: "Height",
+    feet: "Feet",
+    inches: "Inches",
+    cm: "Centimeters (cm)",
+    weightSection: "Weight Assessment",
+    currentWeight: "Current Weight",
+    targetWeight: "Target Weight",
+    mealsPerDay: "Meals per day",
+    waterPerDay: "Glasses of water consumed per day",
+    activityLevel: "Activity level",
+    actSedentary: "Sedentary (desk job, minimal movement)",
+    actLight: "Lightly active (1-2 days per week)",
+    actMod: "Moderately active (3-4 days per week)",
+    actVery: "Very active (5-6 days per week)",
+    prioritiesTitle: "Wellness priorities (multi-select, can rank up to 4)",
+    prioritiesSubtitle: "Click in order of importance. Your primary choice dictates calorie target logic.",
+    pLose: "Lose Weight",
+    pGain: "Gain Weight",
+    pMuscle: "Build Muscle",
+    pFitness: "Improve Fitness",
+    pNutrition: "Improve Overall Nutrition",
+    pMaintain: "Maintain Weight",
+    foodPrefTitle: "Food preference",
+    foodVeg: "Vegetarian",
+    foodEgg: "Eggetarian",
+    foodNonVeg: "Non-vegetarian",
+    btnGetResults: "Get My Results",
+    btnReset: "Reset",
+    btnPrint: "Print / Save as PDF",
+    resultsHeading: "Customer Suggestion & Wellness Report",
+    resultsSubtitle: "Computed according to standard nutritional and metabolic formulas.",
+    summaryHeading: "A. User Profile Summary",
+    thParam: "Parameter",
+    thValue: "Customer Value",
+    targetsHeading: "B. Daily Targets",
+    tProtein: "Protein per Day",
+    tCalories: "Calories per Day",
+    tWater: "Water per Day",
+    calcHeading: "C. Calculation Logic",
+    mealHeading: "D. Meal Plan Table",
+    thMeal: "Meal",
+    thProtein: "Protein (g)",
+    thCalories: "Calories",
+    thFoodIdeas: "Food Ideas (Plain Indian Foods)",
+    exHeading: "E. 7-Day Exercise Plan",
+    thDay: "Day",
+    thWorkout: "Workout",
+    thDuration: "Duration",
+    tipsHeading: "F. Water & Lifestyle Tips",
+    discTitle: "G. Important Disclaimer",
+    disclaimer: "This is general guidance for information only, not medical advice. Consult a doctor or dietitian before starting any diet or exercise plan.",
+    errAge: "Please enter a valid age between 10 and 120.",
+    errHeight: "Please enter a valid height.",
+    errCurrentWeight: "Please enter a valid current weight.",
+    errTargetWeight: "Please enter a valid target weight.",
+    errPriorities: "Please select at least 1 priority (up to 4)."
+  },
+  te: {
+    appName: "వెల్‌నెస్ ప్రొఫైల్ – కస్టమర్ సూచనలు",
+    appSubtitle: "వ్యక్తిగత పోషకాహారం మరియు ఫిట్‌నెస్ అంచనా నివేదిక",
+    infoOnlyBadge: "కేవలం సమాచారం కొరకు మాత్రమే",
+    preparedBy: "సిద్ధం చేసిన వారు",
+    contact: "సంప్రదించాల్సిన నంబర్",
+    assessmentDate: "తేదీ",
+    formTitle: "కస్టమర్ వెల్‌నెస్ వివరాల ఫారమ్",
+    formSubtitle: "సరైన ఆహారపు మరియు వ్యాయామ సూచనల కొరకు దయచేసి కింది వివరాలను నమోదు చేయండి.",
+    fullName: "పేరు (ఐచ్ఛికం)",
+    age: "వయస్సు",
+    gender: "లింగం",
+    male: "పురుషుడు",
+    female: "స్త్రీ",
+    height: "ఎత్తు",
+    feet: "అడుగులు",
+    inches: "అంగుళాలు",
+    cm: "సెం.మీ (cm)",
+    weightSection: "బరువు వివరాలు",
+    currentWeight: "ప్రస్తుత బరువు",
+    targetWeight: "లక్ష్య బరువు",
+    mealsPerDay: "రోజుకు ఎన్ని సార్లు ఆహారం?",
+    waterPerDay: "రోజుకు త్రాగే నీటి గ్లాసులు",
+    activityLevel: "శారీరక శ్రమ స్థాయి",
+    actSedentary: "నిశ్చల జీవనశైలి (కూర్చుని చేసే పని, తక్కువ శ్రమ)",
+    actLight: "తేలికపాటి శ్రమ (వారానికి 1-2 రోజులు వ్యాయామం)",
+    actMod: "మితమైన శ్రమ (వారానికి 3-4 రోజులు వ్యాయామం)",
+    actVery: "అధిక శ్రమ (వారానికి 5-6 రోజులు వ్యాయామం)",
+    prioritiesTitle: "ఆరోగ్య ప్రాధాన్యతలు (గరిష్టంగా 4 ఎంచుకోవచ్చు)",
+    prioritiesSubtitle: "ప్రాధాన్యత క్రమంలో క్లిక్ చేయండి. మొదటి ఎంపిక మీ కేలరీల లక్ష్యాన్ని నిర్ణయిస్తుంది.",
+    pLose: "బరువు తగ్గడం",
+    pGain: "బరువు పెరగడం",
+    pMuscle: "కండరాల నిర్మాణం",
+    pFitness: "ఫిట్‌నెస్ మెరుగుపరచడం",
+    pNutrition: "మొత్తం పోషకాహారం మెరుగుపరచడం",
+    pMaintain: "బరువు నిర్వహణ",
+    foodPrefTitle: "ఆహార ప్రాధాన్యత",
+    foodVeg: "శాకాహారం",
+    foodEgg: "ఎగ్గేటేరియన్ (గుడ్లు)",
+    foodNonVeg: "మాంసాహారం",
+    btnGetResults: "నా ఫలితాలు పొందండి",
+    btnReset: "రీసెట్",
+    btnPrint: "ప్రింట్ / PDF గా భద్రపరచండి",
+    resultsHeading: "కస్టమర్ సూచనల మరియు వెల్‌నెస్ నివేదిక",
+    resultsSubtitle: "ప్రామాణిక పోషకాహార మరియు శరీర మెటబాలిక్ సూత్రాల ప్రకారం లెక్కించబడింది.",
+    summaryHeading: "A. కస్టమర్ ప్రొఫైల్ వివరాల సారాంశం",
+    thParam: "అంశం",
+    thValue: "విలువ",
+    targetsHeading: "B. రోజువారీ లక్ష్యాలు",
+    tProtein: "రోజువారీ ప్రోటీన్",
+    tCalories: "రోజువారీ కేలరీలు",
+    tWater: "రోజువారీ నీరు",
+    calcHeading: "C. గణన పద్ధతి మరియు వివరణ",
+    mealHeading: "D. రోజువారీ భోజన ప్రణాళిక పట్టిక",
+    thMeal: "ఆహార సమయం",
+    thProtein: "ప్రోటీన్ (g)",
+    thCalories: "కేలరీలు",
+    thFoodIdeas: "భారతీయ ఆహార సూచనలు",
+    exHeading: "E. 7 రోజుల వ్యాయామ ప్రణాళిక",
+    thDay: "రోజు",
+    thWorkout: "వ్యాయామం",
+    thDuration: "సమయం",
+    tipsHeading: "F. నీటి వినియోగం మరియు జీవనశైలి సూచనలు",
+    discTitle: "G. ముఖ్యమైన గమనిక & డిస్క్లైమర్",
+    disclaimer: "ఇది కేవలం సమాచార ప్రయోజనాల కోసం రూపొందించబడిన సాధారణ మార్గదర్శకం మాత్రమే, వైద్య సలహా కాదు. ఏదైనా ఆహారపు లేదా వ్యాయామ ప్రణాళికను ప్రారంభించే ముందు అర్హత కలిగిన వైద్యుడిని లేదా డైటీషియన్‌ను సంప్రదించండి.",
+    errAge: "దయచేసి 10 నుండి 120 మధ్య సరైన వయస్సు నమోదు చేయండి.",
+    errHeight: "దయచేసి సరైన ఎత్తును నమోదు చేయండి.",
+    errCurrentWeight: "దయచేసి సరైన ప్రస్తుత బరువును నమోదు చేయండి.",
+    errTargetWeight: "దయచేసి సరైన లక్ష్య బరువును నమోదు చేయండి.",
+    errPriorities: "దయచేసి కనీసం 1 ప్రాధాన్యతను ఎంచుకోండి."
+  }
+};
+
+// Global App State (stored in JS variables, no localStorage)
+let currentLang = 'en';
+let heightUnit = 'ft_in';
+let weightUnit = 'kg';
+let selectedMealsCount = 4;
+let selectedFoodPref = 'vegetarian';
+let selectedPriorities = ['lose_weight', 'build_muscle'];
+
+// Initialize default date
+document.getElementById('assessment-date').value = new Date().toISOString().split('T')[0];
+
+/**
+ * Switch Application Language
+ */
+function setLanguage(lang) {
+  currentLang = lang;
+  document.getElementById('btn-en').className = 'lang-btn ' + (lang === 'en' ? 'active' : '');
+  document.getElementById('btn-te').className = 'lang-btn ' + (lang === 'te' ? 'active' : '');
+
+  // Update elements with data-i18n
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang] && translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+
+  // Re-calculate and re-render results if shown
+  computeAndRender();
+}
+
+/**
+ * Height & Weight Unit Toggles
+ */
+function setHeightUnit(unit) {
+  heightUnit = unit;
+  document.getElementById('unit-ft-btn').style.background = unit === 'ft_in' ? '#000' : '#fff';
+  document.getElementById('unit-ft-btn').style.color = unit === 'ft_in' ? '#fff' : '#000';
+  document.getElementById('unit-cm-btn').style.background = unit === 'cm' ? '#000' : '#fff';
+  document.getElementById('unit-cm-btn').style.color = unit === 'cm' ? '#fff' : '#000';
+
+  if (unit === 'cm') {
+    const ft = parseFloat(document.getElementById('height-ft').value) || 5;
+    const inch = parseFloat(document.getElementById('height-in').value) || 0;
+    document.getElementById('height-cm').value = Math.round((ft * 12 + inch) * 2.54);
+    document.getElementById('height-ft-container').style.display = 'none';
+    document.getElementById('height-cm-container').style.display = 'block';
+  } else {
+    const cm = parseFloat(document.getElementById('height-cm').value) || 170;
+    const totalInches = cm / 2.54;
+    document.getElementById('height-ft').value = Math.floor(totalInches / 12);
+    document.getElementById('height-in').value = Math.round(totalInches % 12);
+    document.getElementById('height-ft-container').style.display = 'grid';
+    document.getElementById('height-cm-container').style.display = 'none';
+  }
+}
+
+function setWeightUnit(unit) {
+  weightUnit = unit;
+  document.getElementById('unit-kg-btn').style.background = unit === 'kg' ? '#000' : '#fff';
+  document.getElementById('unit-kg-btn').style.color = unit === 'kg' ? '#fff' : '#000';
+  document.getElementById('unit-lbs-btn').style.background = unit === 'lbs' ? '#000' : '#fff';
+  document.getElementById('unit-lbs-btn').style.color = unit === 'lbs' ? '#fff' : '#000';
+
+  document.getElementById('curr-weight-unit').textContent = unit;
+  document.getElementById('target-weight-unit').textContent = unit;
+
+  const curr = parseFloat(document.getElementById('current-weight').value);
+  const tgt = parseFloat(document.getElementById('target-weight').value);
+
+  if (unit === 'lbs') {
+    if (curr) document.getElementById('current-weight').value = (curr * 2.20462).toFixed(1);
+    if (tgt) document.getElementById('target-weight').value = (tgt * 2.20462).toFixed(1);
+  } else {
+    if (curr) document.getElementById('current-weight').value = (curr / 2.20462).toFixed(1);
+    if (tgt) document.getElementById('target-weight').value = (tgt / 2.20462).toFixed(1);
+  }
+}
+
+function selectMeals(count) {
+  selectedMealsCount = count;
+  [2, 3, 4, 5].forEach(c => {
+    const el = document.getElementById('meal-opt-' + c);
+    el.className = 'radio-tile ' + (c === count ? 'selected' : '');
+  });
+}
+
+function selectFoodPref(pref) {
+  selectedFoodPref = pref;
+  ['vegetarian', 'eggetarian', 'non_vegetarian'].forEach(p => {
+    const el = document.getElementById('food-opt-' + p);
+    el.className = 'radio-tile ' + (p === pref ? 'selected' : '');
+  });
+}
+
+function togglePriority(id) {
+  const idx = selectedPriorities.indexOf(id);
+  if (idx >= 0) {
+    selectedPriorities.splice(idx, 1);
+  } else {
+    if (selectedPriorities.length < 4) {
+      selectedPriorities.push(id);
+    }
+  }
+  updatePriorityBadges();
+}
+
+function updatePriorityBadges() {
+  const all = ['lose_weight', 'gain_weight', 'build_muscle', 'improve_fitness', 'improve_nutrition', 'maintain_weight'];
+  all.forEach(p => {
+    const el = document.getElementById('p-' + p);
+    const badge = document.getElementById('badge-' + p);
+    const rank = selectedPriorities.indexOf(p);
+    if (rank >= 0) {
+      el.className = 'priority-item selected';
+      badge.textContent = '#' + (rank + 1);
+      badge.style.display = 'inline-block';
+    } else {
+      el.className = 'priority-item';
+      badge.style.display = 'none';
+    }
+  });
+}
+
+function syncAdvisorDetails() {
+  document.getElementById('print-advisor').textContent = document.getElementById('advisor-name').value || '—';
+  document.getElementById('print-contact').textContent = document.getElementById('advisor-contact').value || '—';
+  document.getElementById('print-date').textContent = document.getElementById('assessment-date').value || '—';
+  document.getElementById('print-customer-name').textContent = document.getElementById('cust-name').value || '—';
+}
+
+function handleFormSubmit(e) {
+  e.preventDefault();
+  if (selectedPriorities.length === 0) {
+    document.getElementById('err-priorities').style.display = 'block';
+    return;
+  }
+  document.getElementById('err-priorities').style.display = 'none';
+  computeAndRender();
+  document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetAll() {
+  document.getElementById('cust-name').value = '';
+  document.getElementById('cust-age').value = '32';
+  document.getElementById('current-weight').value = '80';
+  document.getElementById('target-weight').value = '70';
+  selectedPriorities = ['lose_weight'];
+  updatePriorityBadges();
+  selectMeals(3);
+  selectFoodPref('vegetarian');
+  setHeightUnit('ft_in');
+  setWeightUnit('kg');
+  computeAndRender();
+}
+
+/**
+ * Core Calculation Logic
+ */
+function computeAndRender() {
+  syncAdvisorDetails();
+
+  const name = document.getElementById('cust-name').value.trim();
+  const age = parseFloat(document.getElementById('cust-age').value) || 30;
+  const gender = document.querySelector('input[name="gender"]:checked').value;
+  const activity = document.querySelector('input[name="activity"]:checked').value;
+  const waterGlasses = parseInt(document.getElementById('water-select').value) || 8;
+
+  // Height conversion to cm
+  let heightCm = 170;
+  if (heightUnit === 'cm') {
+    heightCm = parseFloat(document.getElementById('height-cm').value) || 170;
+  } else {
+    const ft = parseFloat(document.getElementById('height-ft').value) || 5;
+    const inch = parseFloat(document.getElementById('height-in').value) || 7;
+    heightCm = Math.round((ft * 12 + inch) * 2.54);
+  }
+
+  // Weight conversion to kg
+  let currentKg = 70;
+  let targetKg = 65;
+  if (weightUnit === 'kg') {
+    currentKg = parseFloat(document.getElementById('current-weight').value) || 70;
+    targetKg = parseFloat(document.getElementById('target-weight').value) || 65;
+  } else {
+    currentKg = Math.round(((parseFloat(document.getElementById('current-weight').value) || 154) / 2.20462) * 10) / 10;
+    targetKg = Math.round(((parseFloat(document.getElementById('target-weight').value) || 143) / 2.20462) * 10) / 10;
+  }
+
+  // BMI calculation
+  const heightM = heightCm / 100;
+  const bmi = (currentKg / (heightM * heightM)).toFixed(1);
+  let bmiCatEn = "Normal weight (18.5 – 24.9)";
+  let bmiCatTe = "సాధారణ బరువు (18.5 – 24.9)";
+  if (bmi < 18.5) {
+    bmiCatEn = "Underweight (< 18.5)";
+    bmiCatTe = "తక్కువ బరువు (< 18.5)";
+  } else if (bmi > 29.9) {
+    bmiCatEn = "Obese (≥ 30.0)";
+    bmiCatTe = "ఊబకాయం (≥ 30.0)";
+  } else if (bmi > 24.9) {
+    bmiCatEn = "Overweight (25.0 – 29.9)";
+    bmiCatTe = "అధిక బరువు (25.0 – 29.9)";
+  }
+
+  // Mifflin-St Jeor formula
+  const bmrBase = 10 * currentKg + 6.25 * heightCm - 5 * age;
+  const bmr = Math.round(bmrBase + (gender === 'male' ? 5 : -161));
+
+  // Activity multiplier
+  const multipliers = {
+    sedentary: 1.2,
+    lightly_active: 1.375,
+    moderately_active: 1.55,
+    very_active: 1.725
+  };
+  const actMult = multipliers[activity] || 1.2;
+  const tdee = Math.round(bmr * actMult);
+
+  // Goal adjustment based on primary priority
+  const primaryP = selectedPriorities[0] || 'maintain_weight';
+  let goalAdj = 0;
+  if (primaryP === 'lose_weight') {
+    goalAdj = -500;
+  } else if (primaryP === 'gain_weight' || primaryP === 'build_muscle') {
+    goalAdj = 300;
+  }
+
+  const calorieFloor = gender === 'male' ? 1500 : 1200;
+  let caloriesTarget = Math.max(calorieFloor, tdee + goalAdj);
+
+  // Protein calculation: 1.6 g/kg if losing weight or muscle building, else 1.2 g/kg (using target weight)
+  const isHighProtein = selectedPriorities.includes('lose_weight') || selectedPriorities.includes('build_muscle');
+  const proteinMult = isHighProtein ? 1.6 : 1.2;
+  const proteinTarget = Math.round(targetKg * proteinMult);
+
+  // Water target: min 8 glasses or body weight formula (~35ml/kg)
+  const recWater = Math.max(8, Math.round(currentKg * 0.14));
+
+  // Timeline (0.5 kg safe change / week)
+  const diffKg = Math.abs(currentKg - targetKg);
+  const weeks = Math.round((diffKg / 0.5) * 10) / 10;
+  const days = Math.round(weeks * 7);
+
+  // Render Daily Targets
+  document.getElementById('disp-protein').textContent = proteinTarget + ' g';
+  document.getElementById('disp-protein-note').textContent = `${proteinMult} g/kg target weight`;
+  document.getElementById('disp-calories').textContent = caloriesTarget + ' kcal';
+  document.getElementById('disp-calories-note').textContent = `${goalAdj > 0 ? '+' : ''}${goalAdj} kcal adjustment`;
+  document.getElementById('disp-water').textContent = recWater + (currentLang === 'te' ? ' గ్లాసులు' : ' glasses');
+  document.getElementById('disp-water-note').textContent = `~${(recWater * 0.25).toFixed(1)} L/day`;
+
+  // Render Summary Table
+  const pLabels = selectedPriorities.map((p, idx) => `#${idx + 1} ` + (currentLang === 'te' ? translations.te['p' + p.split('_').map(w => w[0].toUpperCase() + w.slice(1)).join('')] || p : translations.en['p' + p.split('_').map(w => w[0].toUpperCase() + w.slice(1)).join('')] || p)).join(' • ');
+
+  const summaryRows = [
+    { label: currentLang === 'te' ? 'కస్టమర్ పేరు' : 'Customer Name', val: name || (currentLang === 'te' ? 'గౌరవనీయ కస్టమర్' : 'Valued Customer') },
+    { label: currentLang === 'te' ? 'వయస్సు & లింగం' : 'Age & Gender', val: `${age} yrs • ${gender === 'male' ? (currentLang === 'te' ? 'పురుషుడు' : 'Male') : (currentLang === 'te' ? 'స్త్రీ' : 'Female')}` },
+    { label: currentLang === 'te' ? 'ఎత్తు' : 'Height', val: `${heightCm} cm (${Math.floor(heightCm/30.48)} ft ${Math.round((heightCm%30.48)/2.54)} in)` },
+    { label: currentLang === 'te' ? 'ప్రస్తుత బరువు' : 'Current Weight', val: `${currentKg} kg (${Math.round(currentKg*2.20462)} lbs)` },
+    { label: currentLang === 'te' ? 'లక్ష్య బరువు' : 'Target Weight', val: `${targetKg} kg (${Math.round(targetKg*2.20462)} lbs)` },
+    { label: currentLang === 'te' ? 'బాడీ మాస్ ఇండెక్స్ (BMI)' : 'Body Mass Index (BMI)', val: `${bmi} — ${currentLang === 'te' ? bmiCatTe : bmiCatEn}` },
+    { label: currentLang === 'te' ? 'రోజుకు ఆహార సమయాలు' : 'Meals per Day', val: `${selectedMealsCount} meals` },
+    { label: currentLang === 'te' ? 'ఆరోగ్య ప్రాధాన్యతలు' : 'Priorities', val: pLabels },
+    { label: currentLang === 'te' ? 'ఆహార రకం' : 'Food Preference', val: currentLang === 'te' ? (selectedFoodPref === 'vegetarian' ? 'శాకాహారం' : selectedFoodPref === 'eggetarian' ? 'ఎగ్గేటేరియన్' : 'మాంసాహారం') : selectedFoodPref }
+  ];
+
+  document.getElementById('summary-table-body').innerHTML = summaryRows.map(r => `
+    <tr>
+      <td class="bold">${r.label}</td>
+      <td>${r.val}</td>
+    </tr>
+  `).join('');
+
+  // Render Calculation Logic
+  document.getElementById('calc-logic-body').innerHTML = `
+    <tr>
+      <td class="bold">${currentLang === 'te' ? 'బేసల్ మెటబాలిక్ రేటు (BMR)' : 'Basal Metabolic Rate (BMR)'}</td>
+      <td><strong>${bmr} kcal</strong> (${currentLang === 'te' ? 'మిఫ్లిన్-సెయింట్ జీర్ సూత్రం' : 'Mifflin-St Jeor formula'})</td>
+    </tr>
+    <tr>
+      <td class="bold">${currentLang === 'te' ? 'యాక్టివిటీ గుణకం & TDEE' : 'Activity Multiplier & TDEE'}</td>
+      <td>${bmr} × ${actMult} = <strong>${tdee} kcal</strong></td>
+    </tr>
+    <tr>
+      <td class="bold">${currentLang === 'te' ? 'లక్ష్య సర్దుబాటు' : 'Goal Calorie Adjustment'}</td>
+      <td><strong>${goalAdj > 0 ? '+' : ''}${goalAdj} kcal</strong></td>
+    </tr>
+    <tr>
+      <td class="bold">${currentLang === 'te' ? 'తుది కేలరీలు' : 'Final Calorie Target'}</td>
+      <td><strong>${caloriesTarget} kcal</strong> (Floor: ${calorieFloor} kcal)</td>
+    </tr>
+    <tr>
+      <td class="bold">${currentLang === 'te' ? 'ప్రోటీన్ కొలమానం' : 'Protein Requirement'}</td>
+      <td>${targetKg} kg × ${proteinMult} g/kg = <strong>${proteinTarget} g/day</strong></td>
+    </tr>
+  `;
+
+  // Timeline
+  document.getElementById('timeline-box').innerHTML = `
+    <strong style="font-size: 14px;">${currentLang === 'te' ? 'లక్ష్య బరువు చేరుకోవడానికి అంచనా సమయం' : 'Estimated Time to Target Weight'}:</strong>
+    <p style="margin-top: 4px; font-size: 13px;">
+      ${diffKg < 0.2 ? (currentLang === 'te' ? 'కస్టమర్ ఇప్పటికే లక్ష్య బరువు వద్ద ఉన్నారు.' : 'Customer is already at target weight.') :
+      (currentLang === 'te' ? `వారానికి 0.5 kg మార్పు చొప్పున: <strong>${weeks} వారాలు (~${days} రోజులు)</strong>` : `Assuming safe change of 0.5 kg/week: <strong>${weeks} weeks (~${days} days)</strong>`)}
+    </p>
+  `;
+
+  // Render Meal Plan Table
+  const mealsConfig = getMealRatios(selectedMealsCount);
+  document.getElementById('meal-plan-body').innerHTML = mealsConfig.map(m => {
+    const cal = Math.round(caloriesTarget * m.cRatio);
+    const prot = Math.round(proteinTarget * m.pRatio);
+    const ideas = getFoodIdeasText(m.id, selectedFoodPref, currentLang);
+    const name = getMealName(m.id, currentLang);
+    return `
+      <tr>
+        <td class="bold">${name}</td>
+        <td class="text-center bold">${prot} g</td>
+        <td class="text-center bold">${cal} kcal</td>
+        <td style="font-size: 12px;">${ideas}</td>
+      </tr>
+    `;
+  }).join('') + `
+    <tr style="font-weight: 700; border-top: 2px solid #000;">
+      <td>${currentLang === 'te' ? 'మొత్తం రోజువారీ' : 'TOTAL DAILY'}</td>
+      <td class="text-center">${proteinTarget} g</td>
+      <td class="text-center">${caloriesTarget} kcal</td>
+      <td>—</td>
+    </tr>
+  `;
+
+  // Render 7-Day Exercise Plan
+  const workouts = getWorkouts(primaryP, currentLang);
+  document.getElementById('exercise-plan-body').innerHTML = workouts.map(w => `
+    <tr>
+      <td class="bold">${w.day}</td>
+      <td>${w.workout}</td>
+      <td>${w.duration}</td>
+    </tr>
+  `).join('');
+
+  // Render Lifestyle Tips
+  const tips = currentLang === 'te' ? [
+    'ప్రతిరోజూ ఉదయం నిద్రలేవగానే బ్రేక్‌ఫాస్ట్‌కు ముందు 1-2 గ్లాసుల సాధారణ నీరు త్రాగండి.',
+    'రోజంతా క్రమం తప్పకుండా నీరు త్రాగండి; భోజనం చేసిన వెంటనే అధికంగా నీరు త్రాగడం నివారించండి.',
+    'రాత్రి వేళల్లో 7 నుండి 8 గంటల పాటు ప్రశాంతమైన నిద్రను క్రమబద్ధంగా కొనసాగించండి.',
+    'ఆహారాన్ని నెమ్మదిగా, ఫోన్లు లేదా టీవీ చూడకుండా నమిలి తినండి; కడుపు 80% నిండినప్పుడు తినడం ఆపండి.',
+    'రోజువారీ అలవాట్లలో నడకను చేర్చి రోజుకు 8,000 నుండి 10,000 అడుగులు నడవడానికి ప్రయత్నించండి.',
+    'జీర్ణక్రియ మెరుగుపడటానికి మరియు సంతృప్తి కోసం భోజనానికి ముందు తాజా సలాడ్ మరియు పీచు పదార్థాలు తీసుకోండి.'
+  ] : [
+    'Drink 1 to 2 glasses of room-temperature water first thing upon waking up before breakfast.',
+    'Space water intake evenly across the day; avoid drinking large quantities immediately during or after meals.',
+    'Maintain a consistent sleep window targeting 7 to 8 hours of uninterrupted rest every night.',
+    'Practice mindful eating: chew slowly without mobile/TV screens and pause when 80% full.',
+    'Incorporate 8,000 to 10,000 steps daily through short 10-minute walks after meals.',
+    'Add fresh raw salad (cucumber, carrots, greens) before lunch and dinner for dietary fiber.'
+  ];
+
+  document.getElementById('lifestyle-tips-list').innerHTML = tips.map(t => `<li style="margin-bottom: 6px;">${t}</li>`).join('');
+}
+
+function getMealRatios(count) {
+  if (count === 2) {
+    return [
+      { id: 'breakfast', cRatio: 0.45, pRatio: 0.45 },
+      { id: 'dinner', cRatio: 0.55, pRatio: 0.55 }
+    ];
+  } else if (count === 3) {
+    return [
+      { id: 'breakfast', cRatio: 0.25, pRatio: 0.25 },
+      { id: 'lunch', cRatio: 0.40, pRatio: 0.45 },
+      { id: 'dinner', cRatio: 0.35, pRatio: 0.30 }
+    ];
+  } else if (count === 4) {
+    return [
+      { id: 'breakfast', cRatio: 0.25, pRatio: 0.25 },
+      { id: 'lunch', cRatio: 0.35, pRatio: 0.35 },
+      { id: 'snack', cRatio: 0.15, pRatio: 0.15 },
+      { id: 'dinner', cRatio: 0.25, pRatio: 0.25 }
+    ];
+  }
+  return [
+    { id: 'breakfast', cRatio: 0.20, pRatio: 0.20 },
+    { id: 'mid_snack', cRatio: 0.15, pRatio: 0.15 },
+    { id: 'lunch', cRatio: 0.30, pRatio: 0.35 },
+    { id: 'snack', cRatio: 0.15, pRatio: 0.15 },
+    { id: 'dinner', cRatio: 0.20, pRatio: 0.15 }
+  ];
+}
+
+function getMealName(id, lang) {
+  const map = {
+    breakfast: { en: 'Breakfast', te: 'అల్పాహారం (బ్రేక్‌ఫాస్ట్)' },
+    mid_snack: { en: 'Mid-morning Snack', te: 'ఉదయపు స్నాక్' },
+    lunch: { en: 'Lunch', te: 'మధ్యాహ్న భోజనం' },
+    snack: { en: 'Evening Snack', te: 'సాయంత్రపు స్నాక్' },
+    dinner: { en: 'Dinner', te: 'రాత్రి భోజనం' }
+  };
+  return map[id] ? map[id][lang] : id;
+}
+
+function getFoodIdeasText(mealId, pref, lang) {
+  if (pref === 'vegetarian') {
+    if (mealId === 'breakfast') {
+      return lang === 'te' ? 'ఇడ్లీ (2-3) సాంబార్ లేదా పుదీనా చట్నీతో, లేదా వెజిటబుల్ ఉప్మా, పెసరట్టు పెరుగుతో.' : 'Idli (2-3) with sambar, vegetable oats upma, or moong dal dosa (pesarattu) with curd.';
+    } else if (mealId === 'mid_snack') {
+      return lang === 'te' ? 'మజ్జిగ గ్లాస్, వేయించిన శనగలు, మరియు తాజా జామకాయ లేదా ఆపిల్.' : 'Spiced buttermilk, roasted chana, and a seasonal fruit (apple/guava).';
+    } else if (mealId === 'lunch') {
+      return lang === 'te' ? '2 చపాతీలు లేదా బ్రౌన్ రైస్, చిక్కటి పప్పు, పనీర్ లేదా మిక్స్‌డ్ కూర, పెరుగు, దోసకాయ సలాడ్.' : '2 whole wheat rotis or brown rice with dal, paneer bhurji or mixed veg curry, curd, and salad.';
+    } else if (mealId === 'snack') {
+      return lang === 'te' ? 'ఉడకబెట్టిన పచ్చి పెసల మొలకల చాట్, వేరుశనగలు, మరియు గ్రీన్ టీ.' : 'Boiled moong sprouts chaat with lemon, peanuts, and green tea.';
+    } else {
+      return lang === 'te' ? '2 పుల్కాలు పాలక్ పనీర్ లేదా సొరకాయ పప్పు, వెజిటబుల్ సూప్, టమోటా సలాడ్.' : '2 phulkas with palak paneer or dal tadka, cucumber salad, and clear vegetable soup.';
+    }
+  } else if (pref === 'eggetarian') {
+    if (mealId === 'breakfast') {
+      return lang === 'te' ? '3 ఉడకబెట్టిన గుడ్డు తెల్లసొనలు + 1 పూర్తి గుడ్డు ఆమ్లెట్ 2 చపాతీలతో, పుదీనా చట్నీ.' : '3 boiled egg whites + 1 whole egg omelette with 2 rotis or toast, mint chutney.';
+    } else if (mealId === 'mid_snack') {
+      return lang === 'te' ? '1 ఉడకబెట్టిన గుడ్డు మిరియాల పొడితో, తాజా మజ్జిగ, మరియు పండు.' : '1 boiled egg with pepper, fresh buttermilk, and seasonal fruit.';
+    } else if (mealId === 'lunch') {
+      return lang === 'te' ? 'బ్రౌన్ రైస్ లేదా 2 చపాతీలు, గుడ్ల కూర (2 గుడ్లు), పప్పు, గడ్డ పెరుగు, క్యాబేజీ వేపుడు.' : 'Brown rice or 2 rotis with egg curry, yellow dal, curd, and vegetable poriyal.';
+    } else if (mealId === 'snack') {
+      return lang === 'te' ? 'గుడ్డు తెల్లసొన చాట్ (ఉడికించిన తెల్లసొన ముక్కలు, చాట్ మసాలా, కొత్తిమీరతో) మరియు గ్రీన్ టీ.' : 'Egg white chaat with chaat masala and onions, and green tea.';
+    } else {
+      return lang === 'te' ? '2 పుల్కాలు గుడ్డు భుర్జీ, పప్పు మరియు వెజిటబుల్ క్లియర్ సూప్.' : '2 phulkas with scrambled egg bhurji, dal, and vegetable soup.';
+    }
+  } else {
+    // Non-veg
+    if (mealId === 'breakfast') {
+      return lang === 'te' ? 'గుడ్డు భుర్జీ (2 గుడ్లు) 2 చపాతీలతో లేదా ఇడ్లీ సాంబార్, 2 ఉడకబెట్టిన గుడ్డు తెల్లసొనలు.' : 'Egg bhurji with 2 rotis, or idli sambar with 2 boiled egg whites.';
+    } else if (mealId === 'mid_snack') {
+      return lang === 'te' ? 'మజ్జిగ, ఉడకబెట్టిన గుడ్డు తెల్లసొనలు లేదా శనగలు, ఒక పండు.' : 'Buttermilk, boiled egg whites or roasted chana, and seasonal fruit.';
+    } else if (mealId === 'lunch') {
+      return lang === 'te' ? 'బ్రౌన్ రైస్ లేదా 2 చపాతీలు, ఇంటి చికెన్ కూర (120-150 గ్రాములు) లేదా చేపల పులుసు, పప్పు, పెరుగు, సలాడ్.' : 'Brown rice or 2 rotis with chicken curry (120-150g) or fish curry, dal, curd, salad.';
+    } else if (mealId === 'snack') {
+      return lang === 'te' ? 'ఉడికించిన మొలకలు మరియు చికెన్ ముక్కల చాట్, గ్రీన్ టీ, వేయించిన మఖానా.' : 'Boiled sprouts with shredded chicken or egg whites, and green tea.';
+    } else {
+      return lang === 'te' ? 'గ్రిల్డ్ చికెన్ లేదా చేప ముక్కలు ఉడికించిన కూరగాయలతో, 1-2 పుల్కాలు మరియు క్లియర్ సూప్.' : 'Grilled chicken or fish with steamed vegetables, 1 phulka, and chicken clear soup.';
+    }
+  }
+}
+
+function getWorkouts(priority, lang) {
+  if (priority === 'build_muscle' || priority === 'gain_weight') {
+    return [
+      { day: lang === 'te' ? '1వ రోజు' : 'Day 1', workout: lang === 'te' ? 'పై శరీర బలం (పుషప్స్, భుజాల వ్యాయామాలు)' : 'Upper Body Strength (Pushups, overhead presses, rows)', duration: '40 - 45 mins' },
+      { day: lang === 'te' ? '2వ రోజు' : 'Day 2', workout: lang === 'te' ? 'కింది శరీర బలం (స్క్వాట్స్, లంజెస్, కాళ్ల కండరాలు)' : 'Lower Body Strength (Squats, lunges, calf raises)', duration: '40 - 45 mins' },
+      { day: lang === 'te' ? '3వ రోజు' : 'Day 3', workout: lang === 'te' ? 'యాక్టివ్ రికవరీ మరియు కోర్ (చురుకైన నడక, ప్లాంక్స్)' : 'Active Recovery & Core (Brisk walking, planks)', duration: '30 mins' },
+      { day: lang === 'te' ? '4వ రోజు' : 'Day 4', workout: lang === 'te' ? 'పుష్ & పుల్ వ్యాయామాలు (శరీర బరువుతో చేసే వ్యాయామాలు)' : 'Compound Push & Pull Drills', duration: '40 mins' },
+      { day: lang === 'te' ? '5వ రోజు' : 'Day 5', workout: lang === 'te' ? 'కాళ్లు మరియు పొట్ట బలం (వాకింగ్ లంజెస్, సైడ్ ప్లాంక్స్)' : 'Legs & Core Power', duration: '40 mins' },
+      { day: lang === 'te' ? '6వ రోజు' : 'Day 6', workout: lang === 'te' ? 'ఫుల్ బాడీ కండిషనింగ్ సర్క్యూట్' : 'Functional Full-Body Conditioning', duration: '35 mins' },
+      { day: lang === 'te' ? '7వ రోజు' : 'Day 7', workout: lang === 'te' ? 'పూర్తి విశ్రాంతి మరియు కండరాల రికవరీ' : 'Full Rest & Muscle Repair', duration: lang === 'te' ? 'విశ్రాంతి దినం' : 'Rest Day' }
+    ];
+  }
+  return [
+    { day: lang === 'te' ? '1వ రోజు' : 'Day 1', workout: lang === 'te' ? 'మొత్తం శరీర వ్యాయామం & చురుకైన నడక' : 'Full Body Circuit & Brisk Walk', duration: '35 - 40 mins' },
+    { day: lang === 'te' ? '2వ రోజు' : 'Day 2', workout: lang === 'te' ? 'ఏరోబిక్ కొవ్వు కరిగించే నడక లేదా సైక్లింగ్' : 'Aerobic Fat Burn (Brisk walking / cycling)', duration: '40 mins' },
+    { day: lang === 'te' ? '3వ రోజు' : 'Day 3', workout: lang === 'te' ? 'కోర్ & కాళ్ల వ్యాయామం (ప్లాంక్స్, గ్లూట్ బ్రిడ్జెస్)' : 'Core & Lower Body Toning', duration: '30 - 35 mins' },
+    { day: lang === 'te' ? '4వ రోజు' : 'Day 4', workout: lang === 'te' ? 'యాక్టివ్ రికవరీ & స్ట్రెచింగ్ (సూర్య నమస్కారాలు, యోగా)' : 'Active Recovery & Flexibility (Yoga / stretches)', duration: '25 - 30 mins' },
+    { day: lang === 'te' ? '5వ రోజు' : 'Day 5', workout: lang === 'te' ? 'పై శరీరం మరియు వీపు బలం (ఇన్‌క్లైన్ పుషప్స్)' : 'Upper Body & Posture Strengthening', duration: '35 mins' },
+    { day: lang === 'te' ? '6వ రోజు' : 'Day 6', workout: lang === 'te' ? 'కార్డియో విరామ నడక (వేగవంతమైన నడక విరామాలు)' : 'Cardio Interval Training', duration: '40 - 45 mins' },
+    { day: lang === 'te' ? '7వ రోజు' : 'Day 7', workout: lang === 'te' ? 'పూర్తి విశ్రాంతి దినం' : 'Complete Rest & Rejuvenation', duration: lang === 'te' ? 'విశ్రాంతి దినం' : 'Rest Day' }
+  ];
+}
+
+// Initial calculation and load
+computeAndRender();
+</script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+/* Clean Black-and-White Design System */
+/* Strictly no colors, no gradients, no icons, no external fonts */
+@import "tailwindcss";
+
+:root {
+  --font-stack: "Noto Sans Telugu", "Nirmala UI", "Gautami", "Times New Roman", Times, Georgia, serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+  color: #000000;
+  font-family: var(--font-stack);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure crisp typography and borders */
+* {
+  box-sizing: border-box;
+}
+
+/* Base Form Inputs */
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  font-family: var(--font-stack);
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #000000;
+  border-radius: 0;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid #000000;
+  outline-offset: 1px;
+}
+
+/* Buttons */
+button {
+  font-family: var(--font-stack);
+  cursor: pointer;
+  border-radius: 0;
+}
+
+/* Print Stylesheet */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm 15mm 15mm 15mm;
+  }
+
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt;
+    line-height: 1.4;
+  }
+
+  /* Hide interactive controls, form inputs, buttons, navigation */
+  .no-print,
+  nav,
+  button,
+  .form-section,
+  .language-toggle-bar,
+  .advisor-edit-panel,
+  .sample-loader {
+    display: none !important;
+  }
+
+  /* Force display of results and print header */
+  .results-section,
+  .print-only-header {
+    display: block !important;
+  }
+
+  /* Table rules for print */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    page-break-inside: avoid !important;
+    margin-bottom: 1rem !important;
+  }
+
+  tr, td, th {
+    page-break-inside: avoid !important;
+  }
+
+  th, td {
+    border: 1px solid #000000 !important;
+    padding: 6px 8px !important;
+    font-size: 10pt !important;
+  }
+
+  th {
+    background-color: #ffffff !important;
+    font-weight: 700 !important;
+  }
+
+  /* Break avoidance on sections */
+  .print-avoid-break {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Print dual column if requested */
+  .print-bilingual-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1.5rem !important;
+  }
+}
+
+/* Screen only helper */
+@media screen {
+  .print-only-header {
+    display: none;
+  }
+}

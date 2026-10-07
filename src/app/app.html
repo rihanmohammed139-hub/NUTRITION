@@ -1,0 +1,1011 @@
+<main class="min-h-screen bg-white text-black p-4 sm:p-8 max-w-5xl mx-auto">
+  
+  <!-- ================= PRINT HEADER (Shown only when printing) ================= -->
+  <header class="print-only-header mb-6 pb-4 border-b border-black">
+    <div class="flex justify-between items-start">
+      <div>
+        <h1 class="text-2xl font-bold uppercase tracking-wide">
+          {{ t().printHeaderTitle }}
+        </h1>
+        <p class="text-sm mt-1">
+          {{ t().appSubtitle }} ({{ t().infoOnlyBadge }})
+        </p>
+      </div>
+      <div class="text-right text-sm">
+        <p><strong>{{ t().assessmentDate }}:</strong> {{ todayDate() }}</p>
+        <p><strong>{{ t().summaryName }}:</strong> {{ form.controls.name.value || t().printNotProvided }}</p>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-4 mt-3 pt-3 border-t border-black text-sm">
+      <p><strong>{{ t().preparedBy }}:</strong> {{ advisorName() || '—' }}</p>
+      <p><strong>{{ t().contact }}:</strong> {{ advisorContact() || '—' }}</p>
+    </div>
+  </header>
+
+  <!-- ================= TOP BAR & CONTROLS (Hidden during print) ================= -->
+  <nav class="no-print border-b border-black pb-4 mb-6">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">
+          {{ t().appName }}
+        </h1>
+        <p class="text-sm mt-1 text-black">
+          {{ t().appSubtitle }} &bull; <span class="font-semibold">{{ t().infoOnlyBadge }}</span>
+        </p>
+      </div>
+
+      <!-- Language Toggle -->
+      <div class="flex items-center gap-2 border border-black p-1 self-stretch sm:self-auto justify-between sm:justify-start">
+        <span class="text-xs uppercase px-2 font-bold">{{ t().languageToggleLabel }}:</span>
+        <div class="flex">
+          <button
+            type="button"
+            (click)="setLanguage('en')"
+            [class]="currentLang() === 'en' ? 'bg-black text-white px-3 py-1 text-sm font-bold' : 'bg-white text-black px-3 py-1 text-sm hover:underline'"
+          >
+            English
+          </button>
+          <button
+            type="button"
+            (click)="setLanguage('te')"
+            [class]="currentLang() === 'te' ? 'bg-black text-white px-3 py-1 text-sm font-bold' : 'bg-white text-black px-3 py-1 text-sm hover:underline'"
+          >
+            తెలుగు
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Editable Advisor Header Bar -->
+    <section class="mt-4 pt-4 border-t border-black grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+      <div class="flex flex-col">
+        <label for="advisor-input" class="font-bold text-xs uppercase mb-1">{{ t().preparedBy }}:</label>
+        <input
+          id="advisor-input"
+          type="text"
+          [value]="advisorName()"
+          (input)="updateAdvisorName($any($event.target).value)"
+          [placeholder]="t().advisorPlaceholder"
+          class="border border-black px-2 py-1 text-sm"
+        />
+      </div>
+      <div class="flex flex-col">
+        <label for="contact-input" class="font-bold text-xs uppercase mb-1">{{ t().contact }}:</label>
+        <input
+          id="contact-input"
+          type="text"
+          [value]="advisorContact()"
+          (input)="updateAdvisorContact($any($event.target).value)"
+          [placeholder]="t().contactPlaceholder"
+          class="border border-black px-2 py-1 text-sm"
+        />
+      </div>
+      <div class="flex flex-col">
+        <label for="date-input" class="font-bold text-xs uppercase mb-1">{{ t().assessmentDate }}:</label>
+        <input
+          id="date-input"
+          type="date"
+          [value]="todayDate()"
+          (input)="updateDate($any($event.target).value)"
+          class="border border-black px-2 py-1 text-sm"
+        />
+      </div>
+    </section>
+
+    <!-- Quick Utilities Bar -->
+    <aside class="mt-3 flex flex-wrap gap-2 justify-between items-center text-xs">
+      <div class="flex gap-2">
+        <button
+          type="button"
+          (click)="loadSampleData()"
+          class="border border-black px-3 py-1 bg-white hover:bg-black hover:text-white transition-colors"
+        >
+          {{ t().loadSampleBtn }}
+        </button>
+        <button
+          type="button"
+          (click)="downloadStandaloneHtml()"
+          class="border border-black px-3 py-1 bg-white hover:bg-black hover:text-white transition-colors"
+        >
+          {{ t().downloadHtmlBtn }}
+        </button>
+      </div>
+
+      <label class="flex items-center gap-2 cursor-pointer font-bold border border-black px-2 py-1">
+        <input
+          type="checkbox"
+          [checked]="printBothLanguages()"
+          (change)="togglePrintBothLanguages($any($event.target).checked)"
+          class="accent-black"
+        />
+        <span>{{ t().printBothLangLabel }}</span>
+      </label>
+    </aside>
+  </nav>
+
+  <!-- ================= PAGE 1 – INPUT FORM (Customer fills in) ================= -->
+  <section class="form-section no-print border border-black p-4 sm:p-6 mb-8">
+    <div class="border-b border-black pb-3 mb-6">
+      <h2 class="text-xl sm:text-2xl font-bold">
+        {{ t().formTitle }}
+      </h2>
+      <p class="text-sm mt-1">
+        {{ t().formSubtitle }} <span class="font-semibold">{{ t().requiredFieldNotice }}</span>
+      </p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+      
+      <!-- 1. Name & 2. Age & 3. Gender -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- 1. Name (Optional) -->
+        <div>
+          <label for="customer-name" class="block text-sm font-bold mb-1">
+            1. {{ t().fullName }}
+          </label>
+          <input
+            id="customer-name"
+            type="text"
+            formControlName="name"
+            [placeholder]="t().fullNamePlaceholder"
+            class="w-full"
+          />
+        </div>
+
+        <!-- 2. Age -->
+        <div>
+          <label for="customer-age" class="block text-sm font-bold mb-1">
+            2. {{ t().age }} *
+          </label>
+          <input
+            id="customer-age"
+            type="number"
+            formControlName="age"
+            min="10"
+            max="120"
+            [placeholder]="t().agePlaceholder"
+            class="w-full"
+          />
+          @if (showValidationErrors() && form.controls.age.invalid) {
+            <p class="text-xs font-bold mt-1 text-black underline">
+              {{ t().errAgeRequired }}
+            </p>
+          }
+        </div>
+
+        <!-- 3. Gender -->
+        <div>
+          <span class="block text-sm font-bold mb-1">
+            3. {{ t().gender }} *
+          </span>
+          <div class="flex gap-4 mt-2">
+            <label class="flex items-center gap-2 cursor-pointer text-sm font-medium">
+              <input
+                type="radio"
+                value="male"
+                formControlName="gender"
+                class="accent-black"
+              />
+              <span>{{ t().male }}</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer text-sm font-medium">
+              <input
+                type="radio"
+                value="female"
+                formControlName="gender"
+                class="accent-black"
+              />
+              <span>{{ t().female }}</span>
+            </label>
+          </div>
+          @if (showValidationErrors() && form.controls.gender.invalid) {
+            <p class="text-xs font-bold mt-1 text-black underline">
+              {{ t().errGenderRequired }}
+            </p>
+          }
+        </div>
+      </div>
+
+      <!-- 4. Height (Feet + Inches OR cm) -->
+      <div class="border-t border-black pt-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
+          <span class="text-sm font-bold">
+            4. {{ t().height }} *
+          </span>
+          <!-- Switch height unit -->
+          <div class="flex gap-2 text-xs">
+            <button
+              type="button"
+              (click)="toggleHeightUnit('ft_in')"
+              [class]="heightUnit() === 'ft_in' ? 'bg-black text-white px-2 py-0.5 font-bold' : 'border border-black px-2 py-0.5 hover:bg-black hover:text-white'"
+            >
+              Feet & Inches (ft/in)
+            </button>
+            <button
+              type="button"
+              (click)="toggleHeightUnit('cm')"
+              [class]="heightUnit() === 'cm' ? 'bg-black text-white px-2 py-0.5 font-bold' : 'border border-black px-2 py-0.5 hover:bg-black hover:text-white'"
+            >
+              Centimeters (cm)
+            </button>
+          </div>
+        </div>
+
+        @if (heightUnit() === 'ft_in') {
+          <div class="grid grid-cols-2 gap-4 max-w-md">
+            <div>
+              <label for="height-ft" class="block text-xs font-medium mb-1">{{ t().feet }}:</label>
+              <input
+                id="height-ft"
+                type="number"
+                min="3"
+                max="8"
+                formControlName="heightFt"
+                placeholder="5"
+                class="w-full"
+              />
+            </div>
+            <div>
+              <label for="height-in" class="block text-xs font-medium mb-1">{{ t().inches }}:</label>
+              <input
+                id="height-in"
+                type="number"
+                min="0"
+                max="11"
+                formControlName="heightIn"
+                placeholder="8"
+                class="w-full"
+              />
+            </div>
+          </div>
+        } @else {
+          <div class="max-w-xs">
+            <label for="height-cm" class="block text-xs font-medium mb-1">{{ t().cm }}:</label>
+            <input
+              id="height-cm"
+              type="number"
+              min="90"
+              max="240"
+              formControlName="heightCm"
+              placeholder="172"
+              class="w-full"
+            />
+          </div>
+        }
+
+        @if (showValidationErrors() && ((heightUnit() === 'cm' && !form.controls.heightCm.value) || (heightUnit() === 'ft_in' && !form.controls.heightFt.value))) {
+          <p class="text-xs font-bold mt-1 text-black underline">
+            {{ t().errHeightRequired }}
+          </p>
+        }
+      </div>
+
+      <!-- 5. Current Weight & 6. Target Weight -->
+      <div class="border-t border-black pt-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
+          <span class="text-sm font-bold">
+            5 & 6. Weight Assessment *
+          </span>
+          <!-- Switch weight unit -->
+          <div class="flex gap-2 text-xs">
+            <button
+              type="button"
+              (click)="toggleWeightUnit('kg')"
+              [class]="weightUnit() === 'kg' ? 'bg-black text-white px-2 py-0.5 font-bold' : 'border border-black px-2 py-0.5 hover:bg-black hover:text-white'"
+            >
+              Kilograms (kg)
+            </button>
+            <button
+              type="button"
+              (click)="toggleWeightUnit('lbs')"
+              [class]="weightUnit() === 'lbs' ? 'bg-black text-white px-2 py-0.5 font-bold' : 'border border-black px-2 py-0.5 hover:bg-black hover:text-white'"
+            >
+              Pounds (lbs)
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- 5. Current weight -->
+          <div>
+            <label for="current-weight" class="block text-sm font-bold mb-1">
+              5. {{ t().currentWeight }} ({{ weightUnit() }}) *
+            </label>
+            <input
+              id="current-weight"
+              type="number"
+              step="0.1"
+              min="20"
+              max="350"
+              formControlName="currentWeight"
+              [placeholder]="weightUnit() === 'kg' ? 'e.g. 78' : 'e.g. 172'"
+              class="w-full"
+            />
+            @if (showValidationErrors() && form.controls.currentWeight.invalid) {
+              <p class="text-xs font-bold mt-1 text-black underline">
+                {{ t().errCurrentWeightRequired }}
+              </p>
+            }
+          </div>
+
+          <!-- 6. Target weight -->
+          <div>
+            <label for="target-weight" class="block text-sm font-bold mb-1">
+              6. {{ t().targetWeight }} ({{ weightUnit() }}) *
+            </label>
+            <input
+              id="target-weight"
+              type="number"
+              step="0.1"
+              min="20"
+              max="350"
+              formControlName="targetWeight"
+              [placeholder]="weightUnit() === 'kg' ? 'e.g. 70' : 'e.g. 154'"
+              class="w-full"
+            />
+            @if (showValidationErrors() && form.controls.targetWeight.invalid) {
+              <p class="text-xs font-bold mt-1 text-black underline">
+                {{ t().errTargetWeightRequired }}
+              </p>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Meals per day & 8. Glasses of water -->
+      <div class="border-t border-black pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- 7. Meals per day -->
+        <div>
+          <span class="block text-sm font-bold mb-2">
+            7. {{ t().mealsPerDay }} *
+          </span>
+          <div class="grid grid-cols-4 gap-2">
+            @for (count of mealCountOptions; track count) {
+              <label
+                [class]="form.controls.mealsPerDay.value === count ? 'border-2 border-black bg-black text-white p-2 text-center cursor-pointer font-bold text-sm' : 'border border-black p-2 text-center cursor-pointer hover:bg-black hover:text-white text-sm'"
+              >
+                <input
+                  type="radio"
+                  [value]="count"
+                  formControlName="mealsPerDay"
+                  class="sr-only"
+                />
+                <span>{{ count }}</span>
+              </label>
+            }
+          </div>
+          <p class="text-xs mt-1">
+            {{ form.controls.mealsPerDay.value }} {{ t().mealsOption }}
+          </p>
+          @if (showValidationErrors() && form.controls.mealsPerDay.invalid) {
+            <p class="text-xs font-bold mt-1 text-black underline">
+              {{ t().errMealsRequired }}
+            </p>
+          }
+        </div>
+
+        <!-- 8. Glasses of water -->
+        <div>
+          <label for="water-glasses-select" class="block text-sm font-bold mb-2">
+            8. {{ t().waterPerDay }} *
+          </label>
+          <select
+            id="water-glasses-select"
+            formControlName="waterGlasses"
+            class="w-full"
+          >
+            @for (num of waterOptions; track num) {
+              <option [value]="num">
+                {{ num }} {{ t().glassesUnit }}
+              </option>
+            }
+          </select>
+          @if (showValidationErrors() && form.controls.waterGlasses.invalid) {
+            <p class="text-xs font-bold mt-1 text-black underline">
+              {{ t().errWaterRequired }}
+            </p>
+          }
+        </div>
+      </div>
+
+      <!-- 9. Activity level -->
+      <div class="border-t border-black pt-4">
+        <span class="block text-sm font-bold mb-2">
+          9. {{ t().activityLevel }} *
+        </span>
+        <div class="space-y-2">
+          <label class="flex items-start gap-2 cursor-pointer p-2 border border-black hover:bg-black/5">
+            <input
+              type="radio"
+              value="sedentary"
+              formControlName="activityLevel"
+              class="accent-black mt-1"
+            />
+            <span class="text-sm font-medium">{{ t().sedentary }}</span>
+          </label>
+          <label class="flex items-start gap-2 cursor-pointer p-2 border border-black hover:bg-black/5">
+            <input
+              type="radio"
+              value="lightly_active"
+              formControlName="activityLevel"
+              class="accent-black mt-1"
+            />
+            <span class="text-sm font-medium">{{ t().lightlyActive }}</span>
+          </label>
+          <label class="flex items-start gap-2 cursor-pointer p-2 border border-black hover:bg-black/5">
+            <input
+              type="radio"
+              value="moderately_active"
+              formControlName="activityLevel"
+              class="accent-black mt-1"
+            />
+            <span class="text-sm font-medium">{{ t().moderatelyActive }}</span>
+          </label>
+          <label class="flex items-start gap-2 cursor-pointer p-2 border border-black hover:bg-black/5">
+            <input
+              type="radio"
+              value="very_active"
+              formControlName="activityLevel"
+              class="accent-black mt-1"
+            />
+            <span class="text-sm font-medium">{{ t().veryActive }}</span>
+          </label>
+        </div>
+        @if (showValidationErrors() && form.controls.activityLevel.invalid) {
+          <p class="text-xs font-bold mt-1 text-black underline">
+            {{ t().errActivityRequired }}
+          </p>
+        }
+      </div>
+
+      <!-- 10. Wellness priorities (multi-select, rank up to 4) -->
+      <div class="border-t border-black pt-4">
+        <div class="mb-2">
+          <span class="block text-sm font-bold">
+            10. {{ t().prioritiesTitle }} *
+          </span>
+          <p class="text-xs mt-0.5">
+            {{ t().prioritiesSubtitle }}
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+          @for (p of allPriorities; track p.id) {
+            @let rank = getPriorityRank(p.id);
+            <button
+              type="button"
+              (click)="togglePriority(p.id)"
+              [class]="rank ? 'border-2 border-black bg-black text-white p-2.5 text-left flex justify-between items-center font-bold text-sm' : 'border border-black bg-white text-black p-2.5 text-left flex justify-between items-center hover:bg-black/5 text-sm'"
+            >
+              <span>{{ getPriorityLabel(p.id) }}</span>
+              @if (rank) {
+                <span class="border border-white px-2 py-0.5 text-xs font-mono">
+                  #{{ rank }}
+                </span>
+              }
+            </button>
+          }
+        </div>
+
+        <!-- Selected order readout -->
+        @if (selectedPriorities().length > 0) {
+          <div class="mt-2 text-xs border border-black p-2 bg-white">
+            <strong>{{ t().summaryPriorities }}:</strong>
+            @for (p of selectedPriorities(); track p; let idx = $index) {
+              <span class="ml-1">
+                [{{ idx + 1 }}] {{ getPriorityLabel(p) }}@if (idx < selectedPriorities().length - 1) { &bull; }
+              </span>
+            }
+          </div>
+        }
+
+        @if (showValidationErrors() && selectedPriorities().length === 0) {
+          <p class="text-xs font-bold mt-1 text-black underline">
+            {{ t().errPrioritiesRequired }}
+          </p>
+        }
+      </div>
+
+      <!-- 11. Food preference -->
+      <div class="border-t border-black pt-4">
+        <span class="block text-sm font-bold mb-2">
+          11. {{ t().foodPreference }} *
+        </span>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <label
+            [class]="form.controls.foodPreference.value === 'vegetarian' ? 'border-2 border-black bg-black text-white p-3 cursor-pointer text-center font-bold text-sm' : 'border border-black p-3 cursor-pointer text-center hover:bg-black hover:text-white text-sm'"
+          >
+            <input
+              type="radio"
+              value="vegetarian"
+              formControlName="foodPreference"
+              class="sr-only"
+            />
+            <span>{{ t().vegetarian }}</span>
+          </label>
+          <label
+            [class]="form.controls.foodPreference.value === 'eggetarian' ? 'border-2 border-black bg-black text-white p-3 cursor-pointer text-center font-bold text-sm' : 'border border-black p-3 cursor-pointer text-center hover:bg-black hover:text-white text-sm'"
+          >
+            <input
+              type="radio"
+              value="eggetarian"
+              formControlName="foodPreference"
+              class="sr-only"
+            />
+            <span>{{ t().eggetarian }}</span>
+          </label>
+          <label
+            [class]="form.controls.foodPreference.value === 'non_vegetarian' ? 'border-2 border-black bg-black text-white p-3 cursor-pointer text-center font-bold text-sm' : 'border border-black p-3 cursor-pointer text-center hover:bg-black hover:text-white text-sm'"
+          >
+            <input
+              type="radio"
+              value="non_vegetarian"
+              formControlName="foodPreference"
+              class="sr-only"
+            />
+            <span>{{ t().nonVegetarian }}</span>
+          </label>
+        </div>
+        @if (showValidationErrors() && form.controls.foodPreference.invalid) {
+          <p class="text-xs font-bold mt-1 text-black underline">
+            {{ t().errFoodPrefRequired }}
+          </p>
+        }
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="border-t border-black pt-6 flex flex-col sm:flex-row gap-3">
+        <button
+          type="submit"
+          class="bg-black text-white font-bold py-3 px-6 text-base hover:bg-black/80 transition-colors uppercase tracking-wider"
+        >
+          {{ t().getResultsBtn }}
+        </button>
+        <button
+          type="button"
+          (click)="onReset()"
+          class="border border-black bg-white text-black font-bold py-3 px-6 text-base hover:bg-black hover:text-white transition-colors uppercase tracking-wider"
+        >
+          {{ t().resetBtn }}
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ================= PAGE 2 – RESULTS (Shown on same page after submit) ================= -->
+  @if (results(); as res) {
+    <section id="results-section" class="results-section border border-black p-4 sm:p-8 space-y-8">
+      
+      <!-- Results Action Bar on Screen -->
+      <div class="no-print border-b border-black pb-4 flex flex-wrap justify-between items-center gap-3">
+        <div>
+          <h2 class="text-2xl font-bold">
+            {{ t().resultsTitle }}
+          </h2>
+          <p class="text-sm mt-0.5">
+            {{ t().resultsSubtitle }}
+          </p>
+        </div>
+        <div class="flex gap-2">
+          <button
+            type="button"
+            (click)="printReport()"
+            class="bg-black text-white font-bold px-4 py-2 text-sm hover:bg-black/80 transition-colors uppercase tracking-wider"
+          >
+            {{ t().printBtn }}
+          </button>
+        </div>
+      </div>
+
+      <!-- A. USER PROFILE SUMMARY TABLE -->
+      <article class="print-avoid-break">
+        <h3 class="text-lg font-bold border-b border-black pb-2 mb-3">
+          {{ t().summaryHeading }}
+        </h3>
+        <table class="w-full border border-black border-collapse text-sm">
+          <thead>
+            <tr class="border-b border-black">
+              <th class="border-r border-black p-2 text-left font-bold w-1/3">{{ t().thMetric }}</th>
+              <th class="p-2 text-left font-bold">{{ t().thValue }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-black">
+              <td class="border-r border-black p-2 font-medium">{{ t().summaryName }}</td>
+              <td class="p-2 font-bold">{{ form.controls.name.value || t().printNotProvided }}</td>
+            </tr>
+            <tr class="border-b border-black">
+              <td class="border-r border-black p-2 font-medium">{{ t().summaryAge }} &amp; {{ t().summaryGender }}</td>
+              <td class="p-2">{{ form.controls.age.value }} years &bull; {{ form.controls.gender.value === 'male' ? t().male : t().female }}</td>
+            </tr>
+            <tr class="border-b border-black">
+              <td class="border-r border-black p-2 font-medium">{{ t().summaryHeight }}</td>
+              <td class="p-2">{{ currentLang() === 'te' ? res.heightFormattedTe : res.heightFormattedEn }}</td>
+            </tr>
+            <tr class="border-b border-black">
+              <td class="border-r border-black p-2 font-medium">{{ t().summaryCurrentWeight }}</td>
+              <td class="p-2 font-bold">{{ res.currentWeightDisplay }}</td>
+            </tr>
+            <tr class="border-b border-black">
+              <td class="border-r border-black p-2 font-medium">{{ t().summaryTargetWeight }}</td>
+              <td class="p-2 font-bold">{{ res.targetWeightDisplay }}</td>
+            </tr>
+            <tr class="border-b border-black">
+              <td class="border-r border-black p-2 font-medium">{{ t().summaryWeightDiff }}</td>
+              <td class="p-2">{{ res.weightDifferenceDisplay }}</td>
+            </tr>
+            <tr class="border-b border-black">
+              <td class="border-r border-black p-2 font-medium">{{ t().summaryBmi }} &amp; {{ t().summaryBmiCategory }}</td>
+              <td class="p-2">
+                <strong>{{ res.bmi }}</strong> &mdash; {{ getBmiCategoryLabel(res.bmiCategoryKey) }}
+              </td>
+            </tr>
+            <tr class="border-b border-black">
+              <td class="border-r border-black p-2 font-medium">{{ t().summaryActivity }}</td>
+              <td class="p-2">{{ getActivityLabel(form.controls.activityLevel.value || 'sedentary') }}</td>
+            </tr>
+            <tr class="border-b border-black">
+              <td class="border-r border-black p-2 font-medium">{{ t().summaryMeals }} &amp; {{ t().summaryCurrentWater }}</td>
+              <td class="p-2">
+                {{ form.controls.mealsPerDay.value }} {{ t().mealsOption }} &bull; {{ form.controls.waterGlasses.value }} {{ t().glassesUnit }}
+              </td>
+            </tr>
+            <tr class="border-b border-black">
+              <td class="border-r border-black p-2 font-medium">{{ t().summaryPriorities }}</td>
+              <td class="p-2">
+                @for (p of selectedPriorities(); track p; let idx = $index) {
+                  <span>#{{ idx + 1 }} {{ getPriorityLabel(p) }}@if (idx < selectedPriorities().length - 1) { &bull; } </span>
+                }
+              </td>
+            </tr>
+            <tr>
+              <td class="border-r border-black p-2 font-medium">{{ t().summaryFoodPref }}</td>
+              <td class="p-2 font-bold">{{ getFoodPrefLabel(form.controls.foodPreference.value || 'vegetarian') }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- B. DAILY TARGETS (Shown large in plain text) -->
+      <article class="print-avoid-break border border-black p-6">
+        <h3 class="text-lg font-bold border-b border-black pb-2 mb-4">
+          {{ t().dailyTargetsHeading }}
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+          
+          <!-- Protein Target -->
+          <div class="border border-black p-4 flex flex-col justify-between">
+            <span class="text-xs uppercase tracking-wider font-bold mb-2 block">
+              {{ t().proteinTargetLabel }}
+            </span>
+            <div class="my-2">
+              <span class="text-4xl sm:text-5xl font-black block">
+                {{ res.dailyProteinG }} g
+              </span>
+              <span class="text-xs font-medium block mt-1">
+                {{ res.proteinPerKg }} g/kg {{ t().proteinMultiplierLabel }}
+              </span>
+            </div>
+            <p class="text-xs mt-2 border-t border-black pt-2">
+              {{ t().proteinSubtext }}
+            </p>
+          </div>
+
+          <!-- Calories Target -->
+          <div class="border border-black p-4 flex flex-col justify-between">
+            <span class="text-xs uppercase tracking-wider font-bold mb-2 block">
+              {{ t().caloriesTargetLabel }}
+            </span>
+            <div class="my-2">
+              <span class="text-4xl sm:text-5xl font-black block">
+                {{ res.dailyCalories }} kcal
+              </span>
+              <span class="text-xs font-medium block mt-1">
+                {{ res.goalAdjustmentKcal > 0 ? '+' : '' }}{{ res.goalAdjustmentKcal }} kcal {{ t().goalAdjustmentLabel }}
+              </span>
+            </div>
+            <p class="text-xs mt-2 border-t border-black pt-2">
+              {{ t().caloriesSubtext }}
+            </p>
+          </div>
+
+          <!-- Water Target -->
+          <div class="border border-black p-4 flex flex-col justify-between">
+            <span class="text-xs uppercase tracking-wider font-bold mb-2 block">
+              {{ t().waterTargetLabel }}
+            </span>
+            <div class="my-2">
+              <span class="text-4xl sm:text-5xl font-black block">
+                {{ res.targetWaterGlasses }} {{ currentLang() === 'te' ? 'గ్లాసులు' : 'glasses' }}
+              </span>
+              <span class="text-xs font-medium block mt-1">
+                ~{{ (res.targetWaterGlasses * 0.25).toFixed(1) }} Liters / day
+              </span>
+            </div>
+            <p class="text-xs mt-2 border-t border-black pt-2">
+              {{ t().waterSubtext }}
+            </p>
+          </div>
+
+        </div>
+      </article>
+
+      <!-- C. CALCULATION LOGIC & TIMELINE -->
+      <article class="print-avoid-break">
+        <h3 class="text-lg font-bold border-b border-black pb-2 mb-3">
+          {{ t().calcLogicHeading }}
+        </h3>
+        <table class="w-full border border-black border-collapse text-sm mb-4">
+          <tbody>
+            <tr class="border-b border-black">
+              <td class="border-r border-black p-2 font-medium w-1/3">{{ t().bmrLabel }}</td>
+              <td class="p-2">
+                <strong>{{ res.bmr }} kcal</strong>
+                <span class="text-xs block">({{ t().bmrFormulaNote }})</span>
+              </td>
+            </tr>
+            <tr class="border-b border-black">
+              <td class="border-r border-black p-2 font-medium">{{ t().multiplierLabel }} &amp; {{ t().tdeeLabel }}</td>
+              <td class="p-2">
+                {{ res.bmr }} × {{ res.activityMultiplier }} = <strong>{{ res.tdee }} kcal</strong>
+                <span class="text-xs block">({{ t().tdeeFormulaNote }})</span>
+              </td>
+            </tr>
+            <tr class="border-b border-black">
+              <td class="border-r border-black p-2 font-medium">{{ t().goalAdjustmentLabel }}</td>
+              <td class="p-2">
+                <strong>{{ res.goalAdjustmentKcal > 0 ? '+' : '' }}{{ res.goalAdjustmentKcal }} kcal</strong>
+                <span class="text-xs block">
+                  @if (res.goalAdjustmentKcal < 0) {
+                    {{ t().lossAdjustmentNote }}
+                  } @else if (res.goalAdjustmentKcal > 0) {
+                    {{ t().gainAdjustmentNote }}
+                  } @else {
+                    {{ t().maintainAdjustmentNote }}
+                  }
+                </span>
+              </td>
+            </tr>
+            <tr class="border-b border-black">
+              <td class="border-r border-black p-2 font-medium">{{ t().caloriesTargetLabel }} (Final)</td>
+              <td class="p-2">
+                <strong>{{ res.dailyCalories }} kcal</strong>
+                <span class="text-xs block">
+                  @if (res.isCalorieFloorApplied) {
+                    * {{ t().calorieFloorNotice }}
+                  } @else {
+                    * {{ t().calorieFloorNotNeeded }}
+                  }
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td class="border-r border-black p-2 font-medium">{{ t().proteinMultiplierLabel }}</td>
+              <td class="p-2">
+                <strong>{{ res.proteinPerKg }} g/kg</strong> × {{ res.targetWeightKg }} kg (target weight) = <strong>{{ res.dailyProteinG }} g/day</strong>
+                <span class="text-xs block">{{ t().proteinMultiplierNote }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Estimated Timeline to Target Weight -->
+        <div class="border border-black p-3 text-sm">
+          <strong>{{ t().timelineHeading }}:</strong>
+          @if (res.isAlreadyAtTarget) {
+            <p class="mt-1 font-medium">{{ t().timelineAtTarget }}</p>
+          } @else {
+            <p class="mt-1">
+              {{ t().timelineEstimate }}
+              <strong class="text-base ml-1">
+                {{ res.weeksToTarget }} {{ t().weeksWord }} ({{ t().approxPrefix }} {{ res.daysToTarget }} {{ t().daysWord }})
+              </strong>
+            </p>
+          }
+        </div>
+      </article>
+
+      <!-- D. MEAL PLAN TABLE -->
+      <article class="print-avoid-break">
+        <div class="border-b border-black pb-2 mb-3">
+          <h3 class="text-lg font-bold">
+            {{ t().mealPlanHeading }}
+          </h3>
+          <p class="text-xs mt-0.5">
+            {{ t().mealPlanSubtitle }} ({{ getFoodPrefLabel(form.controls.foodPreference.value || 'vegetarian') }})
+          </p>
+        </div>
+
+        <table class="w-full border border-black border-collapse text-sm">
+          <thead>
+            <tr class="border-b border-black">
+              <th class="border-r border-black p-2 text-left font-bold w-1/5">{{ t().thMeal }}</th>
+              <th class="border-r border-black p-2 text-center font-bold w-1/8">{{ t().thProtein }}</th>
+              <th class="border-r border-black p-2 text-center font-bold w-1/8">{{ t().thCalories }}</th>
+              <th class="p-2 text-left font-bold">{{ t().thFoodIdeas }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (meal of res.mealPlan; track meal.id) {
+              <tr class="border-b border-black">
+                <td class="border-r border-black p-2 font-bold">
+                  {{ getMealName(meal.nameKey) }}
+                </td>
+                <td class="border-r border-black p-2 text-center font-bold">
+                  {{ meal.proteinGrams }} g
+                </td>
+                <td class="border-r border-black p-2 text-center font-bold">
+                  {{ meal.calories }} kcal
+                </td>
+                <td class="p-2 text-xs sm:text-sm">
+                  {{ currentLang() === 'te' ? meal.foodIdeasTe : meal.foodIdeasEn }}
+                </td>
+              </tr>
+            }
+            <tr class="border-t-2 border-black font-black">
+              <td class="border-r border-black p-2 uppercase">{{ t().totalRow }}</td>
+              <td class="border-r border-black p-2 text-center">{{ res.dailyProteinG }} g</td>
+              <td class="border-r border-black p-2 text-center">{{ res.dailyCalories }} kcal</td>
+              <td class="p-2 text-xs">&mdash;</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- E. 7-DAY EXERCISE PLAN TABLE -->
+      <article class="print-avoid-break">
+        <div class="border-b border-black pb-2 mb-3">
+          <h3 class="text-lg font-bold">
+            {{ t().exerciseHeading }}
+          </h3>
+          <p class="text-xs mt-0.5">
+            {{ t().exerciseSubtitle }}
+          </p>
+        </div>
+
+        <table class="w-full border border-black border-collapse text-sm">
+          <thead>
+            <tr class="border-b border-black">
+              <th class="border-r border-black p-2 text-left font-bold w-1/6">{{ t().thDay }}</th>
+              <th class="border-r border-black p-2 text-left font-bold">{{ t().thWorkout }}</th>
+              <th class="p-2 text-left font-bold w-1/4">{{ t().thDuration }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (ex of res.exercisePlan; track ex.dayNumber) {
+              <tr class="border-b border-black">
+                <td class="border-r border-black p-2 font-bold">
+                  {{ currentLang() === 'te' ? ex.dayNumber + 'వ రోజు' : 'Day ' + ex.dayNumber }}
+                </td>
+                <td class="border-r border-black p-2">
+                  {{ currentLang() === 'te' ? ex.workoutTe : ex.workoutEn }}
+                </td>
+                <td class="p-2 font-medium">
+                  {{ currentLang() === 'te' ? ex.durationTe : ex.durationEn }}
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </article>
+
+      <!-- F. WATER & LIFESTYLE TIPS -->
+      <article class="print-avoid-break border border-black p-4">
+        <h3 class="text-lg font-bold border-b border-black pb-2 mb-3">
+          {{ t().lifestyleHeading }}
+        </h3>
+        <p class="text-xs mb-3">
+          {{ t().lifestyleSubtitle }}
+        </p>
+        <ul class="space-y-2 text-sm list-disc pl-5">
+          @if (currentLang() === 'te') {
+            @for (tip of res.lifestyleTipsTe; track tip) {
+              <li>{{ tip }}</li>
+            }
+          } @else {
+            @for (tip of res.lifestyleTipsEn; track tip) {
+              <li>{{ tip }}</li>
+            }
+          }
+        </ul>
+      </article>
+
+      <!-- G. DISCLAIMER -->
+      <article class="print-avoid-break border-t-2 border-black pt-4">
+        <h3 class="text-sm font-bold uppercase tracking-wider mb-1">
+          {{ t().disclaimerHeading }}
+        </h3>
+        <p class="text-xs leading-relaxed">
+          {{ t().disclaimerText }}
+        </p>
+      </article>
+
+      <!-- ================= OPTIONAL BILINGUAL PRINT COMPANION ================= -->
+      <!-- Only shown during print IF printBothLanguages() is true -->
+      @if (printBothLanguages()) {
+        <section class="mt-8 pt-8 border-t-4 border-black page-break-before">
+          <div class="mb-4 pb-2 border-b border-black">
+            <h2 class="text-xl font-bold uppercase">
+              {{ currentLang() === 'en' ? tTe.printHeaderTitle : tEn.printHeaderTitle }}
+            </h2>
+            <p class="text-xs">
+              {{ currentLang() === 'en' ? tTe.appSubtitle : tEn.appSubtitle }}
+            </p>
+          </div>
+
+          <!-- Bilingual Meal Plan -->
+          <div class="mb-6">
+            <h4 class="font-bold text-base mb-2">
+              {{ currentLang() === 'en' ? tTe.mealPlanHeading : tEn.mealPlanHeading }}
+            </h4>
+            <table class="w-full border border-black border-collapse text-xs">
+              <thead>
+                <tr class="border-b border-black">
+                  <th class="border-r border-black p-1 text-left font-bold">{{ currentLang() === 'en' ? tTe.thMeal : tEn.thMeal }}</th>
+                  <th class="border-r border-black p-1 text-center font-bold">{{ currentLang() === 'en' ? tTe.thProtein : tEn.thProtein }}</th>
+                  <th class="border-r border-black p-1 text-center font-bold">{{ currentLang() === 'en' ? tTe.thCalories : tEn.thCalories }}</th>
+                  <th class="p-1 text-left font-bold">{{ currentLang() === 'en' ? tTe.thFoodIdeas : tEn.thFoodIdeas }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (m of res.mealPlan; track m.id) {
+                  <tr class="border-b border-black">
+                    <td class="border-r border-black p-1 font-bold">
+                      {{ currentLang() === 'en' ? getMealName(m.nameKey, 'te') : getMealName(m.nameKey, 'en') }}
+                    </td>
+                    <td class="border-r border-black p-1 text-center font-bold">{{ m.proteinGrams }} g</td>
+                    <td class="border-r border-black p-1 text-center font-bold">{{ m.calories }} kcal</td>
+                    <td class="p-1">{{ currentLang() === 'en' ? m.foodIdeasTe : m.foodIdeasEn }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Bilingual Workout Plan -->
+          <div class="mb-6">
+            <h4 class="font-bold text-base mb-2">
+              {{ currentLang() === 'en' ? tTe.exerciseHeading : tEn.exerciseHeading }}
+            </h4>
+            <table class="w-full border border-black border-collapse text-xs">
+              <thead>
+                <tr class="border-b border-black">
+                  <th class="border-r border-black p-1 text-left font-bold">{{ currentLang() === 'en' ? tTe.thDay : tEn.thDay }}</th>
+                  <th class="border-r border-black p-1 text-left font-bold">{{ currentLang() === 'en' ? tTe.thWorkout : tEn.thWorkout }}</th>
+                  <th class="p-1 text-left font-bold">{{ currentLang() === 'en' ? tTe.thDuration : tEn.thDuration }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (w of res.exercisePlan; track w.dayNumber) {
+                  <tr class="border-b border-black">
+                    <td class="border-r border-black p-1 font-bold">
+                      {{ currentLang() === 'en' ? w.dayNumber + 'వ రోజు' : 'Day ' + w.dayNumber }}
+                    </td>
+                    <td class="border-r border-black p-1">
+                      {{ currentLang() === 'en' ? w.workoutTe : w.workoutEn }}
+                    </td>
+                    <td class="p-1">
+                      {{ currentLang() === 'en' ? w.durationTe : w.durationEn }}
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Bilingual Disclaimer -->
+          <div class="border-t border-black pt-3">
+            <h5 class="text-xs font-bold uppercase mb-1">
+              {{ currentLang() === 'en' ? tTe.disclaimerHeading : tEn.disclaimerHeading }}
+            </h5>
+            <p class="text-xs">
+              {{ currentLang() === 'en' ? tTe.disclaimerText : tEn.disclaimerText }}
+            </p>
+          </div>
+        </section>
+      }
+
+    </section>
+  }
+
+</main>
